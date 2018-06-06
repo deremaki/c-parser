@@ -1,6 +1,6 @@
 module Lib
-    ( someFunc
+    ( processFile
     ) where
 
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+processFile :: String -> IO ()
+processFile str = putStrLn str
