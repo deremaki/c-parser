@@ -1,0 +1,2 @@
+./c-parser-exe.exe "C:\Users\derem
+\source\repos\c-parser\ex7.c" "C:\Users\derem\source\repos\c-parser\ex8.c" "C:\Users\derem\source\repos\c-parser\ex10.c"
