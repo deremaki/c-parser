@@ -14,10 +14,8 @@ void main()
 		printf("%.2lf ", Arr[i]);
 	}
 	printf("\n");
-	//selectionSort(Arr, N);
-	//insertionsort(Arr,N);
 	bubblesortl(Arr, N);
-	for(i = 0; i < N; i++)
+	for(i = 0; i < N; i++) 
 	{
 		printf("%.2lf ", Arr[i]);
 	}
@@ -28,7 +26,7 @@ void insertionsort(double *Arr, int n)
 	int i = 1, j;
 	for(i;i<n;i++)
 	{
-		for(j=i-1;j>=0;j--)
+		for(j=i-1;j>=0;j--) 
 		{
 			if(Arr[j]<Arr[j+1]) break;
 			swapValues(&Arr[j],&Arr[j+1]);

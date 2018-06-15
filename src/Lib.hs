@@ -36,8 +36,10 @@ processLine input output = do {
 }
 
 preprocessLine :: String -> String
-preprocessLine line
-    | trimline == "" = line
+preprocessLine l
+    | trimmed == "" = trimmed
     | otherwise = line ++ "\n"
     where
-        trimline = trim line
+        line = removeLineComment l
+        trimmed = trim line
+

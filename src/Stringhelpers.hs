@@ -1,6 +1,8 @@
 module Stringhelpers  where
 
 import Data.Char
+import Data.List
+import Data.Maybe
 
 replace :: Eq a => [a] -> [a] -> [a] -> [a]
 replace needle replacement haystack
@@ -19,3 +21,14 @@ begins _        _                 = Nothing
 trim :: String -> String
 trim = f . f
    where f = reverse . dropWhile isSpace
+
+findSubstring :: Eq a => [a] -> [a] -> Int
+findSubstring pat str = case findIndex (isPrefixOf pat) (tails str) of
+                            Just n  -> n
+                            Nothing -> (-1)
+
+removeLineComment :: String -> String
+removeLineComment line 
+        | isInfixOf "//" line = take n line
+        | otherwise = line
+        where n = findSubstring "//" line
