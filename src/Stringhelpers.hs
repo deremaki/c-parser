@@ -46,9 +46,10 @@ containsStartAndEndOfCommBlock line
         
 removeBlockCommentNotTrimmed :: String -> String
 removeBlockCommentNotTrimmed line
-        | containsStartAndEndOfCommBlock line = (take nl line) ++ (reverse . take nr . reverse $ line)
+        | isInfixOf "/*" line && isInfixOf "*/" line = (take nl line) ++ (reverse . take nr . reverse $ line)
         | isInfixOf "/*" line = take nl line
         | isInfixOf "*/" line = reverse . take nr . reverse $ line
+        | otherwise = line
         where trimmed = trim line
               nl = findSubstring "/*" line
               nr = length line - findSubstring "*/" line - 2
@@ -58,10 +59,51 @@ removeBlockComment line =
         let nottrimmed = removeBlockCommentNotTrimmed line
         in case () of
           _ | trimmed == "" -> ""
-            | otherwise -> nottrimmed ++ "\n"
+            | otherwise -> nottrimmed
             where trimmed = trim nottrimmed
+
+removeInLineBlockComment :: String -> String
+removeInLineBlockComment line 
+        | containsStartAndEndOfCommBlock line = removeBlockComment line
+        | otherwise = line
 
 forifyWhile :: String -> String
 forifyWhile line
         | isInfixOf "while" line = replace "while(" "for(;;" line
         | otherwise = line
+
+containsOpenCurlyBracket :: String -> Bool
+containsOpenCurlyBracket line 
+        | isInfixOf "{" line = True
+        | otherwise = False 
+
+wrapWithOpenCurlyBracket :: String -> String
+wrapWithOpenCurlyBracket line = "{\n" ++ line
+
+wrapWithClosingCurlyBracket :: String -> String
+wrapWithClosingCurlyBracket line = line ++ "}\n"
+
+containsPossibleOneLiner :: String -> Bool
+containsPossibleOneLiner line 
+        | (isInfixOf "for(" line && not (isInfixOf "{" line)) = True
+        | (isInfixOf "for (" line && not (isInfixOf "{" line)) = True
+        | (isInfixOf "if(" line && not (isInfixOf "{" line)) = True
+        | (isInfixOf "if (" line && not (isInfixOf "{" line)) = True
+        | (isInfixOf "else(" line && not (isInfixOf "{" line)) = True
+        | (isInfixOf "else (" line && not (isInfixOf "{" line)) = True
+        | otherwise = False
+
+   
+splitPossibleBlockInOneLine :: String -> String
+splitPossibleBlockInOneLine line 
+        | (isInfixOf "for(" line && isInfixOf "{" line) = replace "{" "\n{" line 
+        | (isInfixOf "for (" line && isInfixOf "{" line) = replace "{" "\n{" line 
+        | (isInfixOf "if(" line && isInfixOf "{" line) = replace "{" "\n{" line 
+        | (isInfixOf "if (" line && isInfixOf "{" line) = replace "{" "\n{" line 
+        | (isInfixOf "else(" line && isInfixOf "{" line) = replace "{" "\n{" line 
+        | (isInfixOf "else (" line && isInfixOf "{" line) = replace "{" "\n{" line 
+        | otherwise = line
+        
+containsOneLinerBlockInOneLine :: String -> Bool
+containsOneLinerBlockInOneLine line = True
+     --   | containsPossibleOneLiner line && 
