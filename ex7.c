@@ -28,7 +28,10 @@ void main()
 		printf("%.2lf ", Arr[i]);
 	}
 	printf("\n");
-
+	
+	/* sprawdzmy komentarz blokowy
+	tu sie jeszcze nie konczy
+	a tu sie konczy */
 
 }
 
@@ -52,15 +55,15 @@ void bubblesort(double a[], int n)
 	int i, j;
 	for(i=n-1; i>0; i--)
 		for(j=0; j<i; j++)
-			if(a[j]>a[j+1]) 
-				swapValues(&a[j], &a[j+1]);
+			if(a[j]>a[j+1]) /*a komentarz w srodku tekstu?
+			*/	swapValues(&a[j], &a[j+1]);
 
 }
 
 void bubblesortl(double a[], int n)
 {
 	int i, j, last;
-	for(i=n-1; i>0; i=last)
+	for(i=n-1; i>0; /*i jeszcze taki bloczek */ i=last)
 		for(j=0; j<i; j++)
 			if(a[j]>a[j+1]) 
 			{

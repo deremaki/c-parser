@@ -9,5 +9,5 @@ main = do
     {
     getArgs >>= mapM_ (\file -> forkIO $ processFile file);
     line <- getLine;
-    putStrLn ("Good bye!");
+    putStr ("Good bye!");
 }

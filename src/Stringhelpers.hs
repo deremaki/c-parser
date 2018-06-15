@@ -32,3 +32,31 @@ removeLineComment line
         | isInfixOf "//" line = take n line
         | otherwise = line
         where n = findSubstring "//" line
+
+containsStartOrEndOfCommBlock :: String -> Bool
+containsStartOrEndOfCommBlock line
+        | isInfixOf "/*" line && not (isInfixOf "*/" line) = True
+        | isInfixOf "*/" line && not (isInfixOf "/*" line) = True
+        | otherwise = False
+
+containsStartAndEndOfCommBlock :: String -> Bool
+containsStartAndEndOfCommBlock line
+        | isInfixOf "/*" line && isInfixOf "*/" line = True
+        | otherwise = False
+        
+removeBlockCommentNotTrimmed :: String -> String
+removeBlockCommentNotTrimmed line
+        | isInfixOf "/*" line && isInfixOf "*/" line = (take nl line) ++ (reverse . take nr . reverse $ line)
+        | isInfixOf "/*" line = take nl line
+        | isInfixOf "*/" line = reverse . take nr . reverse $ line
+        where trimmed = trim line
+              nl = findSubstring "/*" line
+              nr = length line - findSubstring "*/" line - 2
+
+removeBlockComment :: String -> String
+removeBlockComment line = 
+        let nottrimmed = removeBlockCommentNotTrimmed line
+        in case () of
+          _ | trimmed == "" -> ""
+            | otherwise -> nottrimmed ++ "\n"
+            where trimmed = trim nottrimmed
