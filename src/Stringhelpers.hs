@@ -46,7 +46,7 @@ containsStartAndEndOfCommBlock line
         
 removeBlockCommentNotTrimmed :: String -> String
 removeBlockCommentNotTrimmed line
-        | isInfixOf "/*" line && isInfixOf "*/" line = (take nl line) ++ (reverse . take nr . reverse $ line)
+        | containsStartAndEndOfCommBlock line = (take nl line) ++ (reverse . take nr . reverse $ line)
         | isInfixOf "/*" line = take nl line
         | isInfixOf "*/" line = reverse . take nr . reverse $ line
         where trimmed = trim line
@@ -60,3 +60,8 @@ removeBlockComment line =
           _ | trimmed == "" -> ""
             | otherwise -> nottrimmed ++ "\n"
             where trimmed = trim nottrimmed
+
+forifyWhile :: String -> String
+forifyWhile line
+        | isInfixOf "while" line = replace "while(" "for(;;" line
+        | otherwise = line

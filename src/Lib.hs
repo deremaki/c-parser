@@ -53,9 +53,7 @@ processLine input output state = do {
 preprocessLine :: String -> String
 preprocessLine l
     | trimmed == "" = ""
-    | containsStartAndEndOfCommBlock line = removeBlockComment line
     | otherwise = line ++ "\n"
     where
-        line = removeLineComment l
+        line = (forifyWhile . removeLineComment . removeBlockComment) l
         trimmed = trim line
-
