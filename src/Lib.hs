@@ -1,8 +1,16 @@
+{-|
+Module      : Lib
+Description : Main logic module
+
+Logic module containing all the logic behind processing one thread/one file.
+-}
+
 module Lib where
 
 import Stringhelpers
 import System.IO
 
+-- | Main function to manage opening and creation of the files, as well as closing them and running the logic.
 processFile :: String -> IO()
 processFile filepath = do
     { 
@@ -16,12 +24,14 @@ processFile filepath = do
     hClose output;
 }
 
---states:
-    -- 0 - end
-    -- 1 - normal
-    -- 2 - inside multiline comm
-    -- 3 - oneliner block
-
+{- |
+processLine is recursive walk by lines of the file. Inputs are handle to input file, handle to output file and state in which recursion is at the moment.
+States:
+-- 0 - end
+-- 1 - normal
+-- 2 - inside multiline comm
+-- 3 - oneliner block
+-}
 processLine :: Handle -> Handle -> Int -> IO ()
 processLine input output state = do {
     isEof <- hIsEOF input;
@@ -72,6 +82,7 @@ processLine input output state = do {
             }
 }
 
+-- | Function is managing preprocessing of the line, so is removing white lines and comments.
 preprocessLine :: String -> String
 preprocessLine l
     | trimmed == "" = ""
