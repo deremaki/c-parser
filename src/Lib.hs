@@ -19,19 +19,25 @@ processFile filepath = do
     hClose output;
 }
 
-processLine :: Handle -> Handle -> IO String
+processLine :: Handle -> Handle -> IO ()
 processLine input output = do {
     isEof <- hIsEOF input;
     if(isEof)
-        then return "done";
+        then return ();
         else do
             {
                 line <- hGetLine input;
-                print "Line copied";
-                hPutStrLn output line;
+                let test = preprocessLine line
+                in hPutStr output test;
+                
                 processLine input output
+                
             }
 }
 
 preprocessLine :: String -> String
-preprocessLine line = line
+preprocessLine line
+    | trimline == "" = line
+    | otherwise = line ++ "\n"
+    where
+        trimline = trim line
